@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Insert_Sort (2023.07.24).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree %282023.07.25%29.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
