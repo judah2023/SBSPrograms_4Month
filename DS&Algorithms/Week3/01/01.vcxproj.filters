@@ -29,5 +29,8 @@
     <ClInclude Include="Heap (2023.07.26).h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Quick_Sort %282023.07.27%29.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

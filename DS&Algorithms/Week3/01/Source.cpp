@@ -1,151 +1,91 @@
 ﻿#include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
-#pragma region Heap
+#pragma region Counting_Sort
 
-// 여러 값 중에서 최대값 혹은 최소값을 빠르게 찾아내기 위한 자료구조
-
-// 최대 힙
-// 루트 노드에 항상 최대값이 있는 자료구조
-// 부모 노드의 값이 자식 노드의 값보다 크거나 같다
-
-class MaxHeap
+// 데이터의 값을 직접 비교하는 것이 아닌 값의 개수를 저장하여 정렬하는 알고리즘
+enum Constants
 {
-private:
-	vector<int> heap;
-	int size;
-
-	void InsertBalance(int curr)
-	{
-		if (curr == 1)
-			return;
-
-		int next = curr >> 1;
-		if (heap[next] >= heap[curr])
-			return;
-
-		swap(heap[next], heap[curr]);
-		InsertBalance(next);
-	}
-
-	void DeleteBalance(int curr)
-	{
-		int next = curr << 1;
-		if (next > size)
-			return;
-		
-		if (next < size)
-			next = (heap[next] > heap[next + 1]) ? next : next + 1;
-
-		if (heap[curr] >= heap[next])
-			return;
-
-		swap(heap[curr], heap[next]);
-		DeleteBalance(next);
-	}
-
-public:
-	MaxHeap() : size(0)
-	{
-		heap.reserve(1025);
-		heap.push_back(-1);
-	}
-
-	void Insert(int data)
-	{
-		heap.push_back(data);
-		int curr = ++size, next = curr >> 1;
-
-		while (curr > 1)
-		{
-			if (heap[next] >= heap[curr])
-				break;
-
-			swap(heap[next], heap[curr]);
-			curr = next;
-			next >>= 1;
-		}
-	}
-
-	int Delete()
-	{
-		int delNum = heap[1];
-		swap(heap[size--], heap[1]);
-		heap.pop_back(); 
-
-		int curr = 1, next = curr << 1;
-		while (next <= size)
-		{
-			if (next < size)
-				next = (heap[next] > heap[next + 1]) ? next : next + 1;
-
-			if (heap[curr] >= heap[next])
-				break;
-
-			swap(heap[curr], heap[next]);
-			curr = next;
-			next <<= 1;
-		}
-
-		return delNum;
-	}
-
-	void Push(int data)
-	{
-		heap.push_back(data);
-		int curr = ++size;
-
-		InsertBalance(curr);
-	}
-
-	int Pop()
-	{
-		int delNum = heap[1], curr = 1;
-		swap(heap[size--], heap[1]);
-		heap.pop_back();
-
-		DeleteBalance(curr);
-
-		return delNum;
-	}
-
-	bool Empty()
-	{
-		return size == 0;
-	}
-
-	int Size()
-	{
-		return size;
-	}
+	SIZE = 10000
 };
+
+vector<int> vec(SIZE, 0);
 
 #pragma endregion
 
+#pragma region Quick_Sort
+
+// 기준점을 획득한 다음 해당 기준점을 기준으로 배열을 나누고
+// 한 쪽에는 기준잠보다 작은 항목들이 위치하고 다른쪽에는 기준점보다 큰 항목들이 위치한다.
+
+// 나뉘어진 하위 배열에 대해 재귀적으로 퀵 정렬을 호출하여,
+// 모든 배열이 기본 배열이 될 때까지 반복하는 알고리즘
+
+void MideanToHigh(vector<int>& vec, int low, int high)
+{
+	int mid = (low + high) / 2;
+	if (vec[low] < vec[mid])
+	{
+		if (vec[mid] < vec[high])
+			swap(vec[mid], vec[high]);
+		else if (vec[high] < vec[low])
+			swap(vec[low], vec[high]);
+	}
+	else
+	{
+		if (vec[mid] > vec[high])
+			swap(vec[mid], vec[high]);
+		else if (vec[high] > vec[low])
+			swap(vec[low], vec[high]);
+	}
+}
+
+int Partition(vector<int>& vec, int low, int high)
+{
+	MideanToHigh(vec, low, high);
+
+	int pivot = vec[high];
+	int i = low - 1;
+	for (int j = low; j < high; j++)
+	{
+		if (vec[j] < pivot)
+			swap(vec[++i], vec[j]);
+	}
+	swap(vec[++i], vec[high]);
+	return i;
+}
+
+void QuickSort(vector<int>& vec, int low, int high)
+{
+	if (low < high)
+	{
+		int pivot = Partition(vec, low, high);
+
+		QuickSort(vec, low, pivot - 1);
+		QuickSort(vec, pivot + 1, high);
+	}
+}
+
+#pragma endregion
+
+void PrintVector(vector<int>& vec)
+{
+	cout << "[ ";
+	for (auto& it : vec)
+		cout << it << " ";
+	cout << "]" << endl;
+}
 
 int main()
 {
-	MaxHeap heap;
-	heap.Push(1);
-	heap.Push(2);
-	heap.Push(3);
-	heap.Push(4);
-	heap.Push(5);
-	heap.Push(6);
-	heap.Push(7);
+	vector<int> vec = { 5, 4, 3, 2, 1 };
 
-	heap.Push(1);
-	heap.Push(2);
-	heap.Push(3);
-	heap.Push(4);
-	heap.Push(5);
-	heap.Push(6);
-	heap.Push(100);
-
-	while (!heap.Empty())
-		cout << heap.Pop() << " ";
+	PrintVector(vec);
+	QuickSort(vec, 0, vec.size() - 1);
+	PrintVector(vec);
 
 	return 0;
 }
