@@ -29,5 +29,11 @@
     <ClInclude Include="BSTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Binary_Search_Tree (2023.08.04).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hanoi_Tower (2023.08.04).h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
