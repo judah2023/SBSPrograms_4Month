@@ -28,11 +28,42 @@ void HanoiTower(int n, int curr, int waypoint, int next)
 
 #pragma endregion
 
+#pragma region Covariant_Return
+
+class A
+{
+public:
+
+	void Print()
+	{
+		cout << "A Class" << endl;
+	}
+
+	virtual A* GetThis()
+	{
+		return this;
+	}
+
+	void Func() {}
+};
+
+class B : public A
+{
+public:
+	void Print()
+	{
+		cout << "B Class" << endl;
+	}
+
+	virtual B* GetThis()
+	{
+		return this;
+	}
+};
+#pragma endregion
 
 int main()
 {
-	HanoiTower(8, 1, 2, 3);
 
-	cout << (unsigned)cnt;
 	return 0;
 }
